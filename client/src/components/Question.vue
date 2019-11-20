@@ -28,7 +28,9 @@
       </div>
       <div class="question-poster-item">
         <button class="button is-dark">{{ userInitial }}</button>
+        <div>
         {{ question.user.username }}
+        </div>
       </div>
     </div>
   </div>

@@ -14,7 +14,9 @@
         <button class="button is-info">Log in</button>
       </form>
     </div>
-    Don’t have an account? <router-link to="/register" class="has-text-info">Sign up</router-link>
+    <div class="has-margin">
+      Don’t have an account? <router-link to="/users/signup" class="has-text-info">Sign up</router-link>
+    </div>
   </div>
 </template>
 
@@ -47,6 +49,7 @@ export default {
   margin: 10px;
   box-shadow: 0px 2px 10px 5px #e4e4e4;
   text-align: left;
+  padding: 30px;
 }
 .button {
   width: 100%;

@@ -8,7 +8,7 @@
         <h2 class="subtitle">
           We build products that empower developers<br>and connect them to solutions that enable<br>productivity, growth, and discovery.
         </h2>
-        <router-link to="/home"><button class="button is-info">Explore</button></router-link>
+        <router-link to="/questions"><button class="button is-info">Explore</button></router-link>
       </div>
     </div>
   </section>

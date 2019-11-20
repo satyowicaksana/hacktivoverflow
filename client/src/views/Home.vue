@@ -2,7 +2,7 @@
   <div class="home">
     <div class="main-content">
       <div class="columns">
-        <div class="column sidebar is-one-fifth">
+        <div class="column sidebar is-narrow">
           <Sidebar></Sidebar>
         </div>
         <div class="column">

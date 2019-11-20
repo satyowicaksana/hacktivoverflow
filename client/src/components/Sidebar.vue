@@ -1,12 +1,20 @@
 <template>
-  <b-menu>
-    <b-menu-list label="PUBLIC">
-      <router-link to="/questions"><b-menu-item icon="earth" label="Fake Overflow"></b-menu-item></router-link>
-      <b-menu-item label="Tags"></b-menu-item>
-      <b-menu-item label="Users"></b-menu-item>
-      <b-menu-item label="Jobs"></b-menu-item>
-    </b-menu-list>
-  </b-menu>
+  <aside style="text-align: left;" class="menu">
+    <ul class="menu-list">
+      <li><a @click="$router.push('/')">Home</a></li>
+    </ul>
+    <p class="menu-label">
+      PUBLIC
+    </p>
+    <ul class="menu-list">
+      <li><a @click="$router.push('/questions')">
+        <b-icon
+          icon="earth"
+          size="is-small"
+          style="margin-right: 5px;">
+        </b-icon>Stack Overflow</a></li>
+    </ul>
+  </aside>
 </template>
 
 <script>

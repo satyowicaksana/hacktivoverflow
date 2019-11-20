@@ -1,43 +1,104 @@
 <template>
-    <b-navbar>
-        <template slot="brand">
-            <b-navbar-item style="margin-left: 100px;" tag="router-link" :to="{ path: '/' }">
-                <img
-                    src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
-                    alt="Lightweight UI components for Vue.js based on Bulma"
-                >
-            </b-navbar-item>
-        </template>
-        <template slot="start">
-            <b-navbar-item href="#">
-                Home
-            </b-navbar-item>
-            <b-navbar-item href="#">
-                Documentation
-            </b-navbar-item>
-            <b-navbar-dropdown label="Info">
-                <b-navbar-item href="#">
-                    About
-                </b-navbar-item>
-                <b-navbar-item href="#">
-                    Contact
-                </b-navbar-item>
-            </b-navbar-dropdown>
-        </template>
+<nav class="navbar has-background-light" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand brand">
+    <b-dropdown aria-role="list">
+        <button class="button is-light" slot="trigger">
+           <i style="color: grey;" class="fas fa-bars"></i>
+        </button>
 
-        <template slot="end">
-            <b-navbar-item tag="div">
-                <div class="buttons">
-                    <a class="button is-primary">
-                        <strong>Sign up</strong>
-                    </a>
-                    <a class="button is-light">
-                        Log in
-                    </a>
-                </div>
-            </b-navbar-item>
-        </template>
-    </b-navbar>
+        <b-dropdown-item @click="$router.push('/')" aria-role="listitem">Home</b-dropdown-item>
+        <p class="has-text-grey-light" style="margin-top: 5px; margin-left: 15px; text-align: left; font-size: 12px;">PUBLIC</p>
+        <b-dropdown-item @click="$router.push('/questions')" aria-role="listitem">
+          <b-icon
+              class="has-text-grey-light"
+              icon="earth"
+              size="is-small">
+          </b-icon>
+          Stack Overflow
+        </b-dropdown-item>
+        <!-- <b-dropdown-item class="mobile-list" style="color: #147DEF;" @click="$router.push('/users/login')" aria-role="listitem">Login</b-dropdown-item> -->
+        <!-- <b-dropdown-item class="mobile-list"  style="background: #147DEF; color: white;" @click="$router.push('/users/signup')" aria-role="listitem">Sign Up</b-dropdown-item> -->
+    </b-dropdown>
+    <div>
+      <img class="clickable" @click="$router.push('/')"
+        src="../assets/logo.png"
+        alt="Fake Overflow Logo"
+        style="height: 30px; margin-left: 5px;"
+      >
+    </div>
+    <div class="clickable" @click="$router.push('/')">
+      fake<strong>overflow</strong>
+    </div>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu end-item">
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+        <router-link style="margin-right: 5px;" v-if="!$store.state.isLogin" to="/users/login">
+          <a class="button is-light has-text-info login-button">
+            Log in
+          </a>
+        </router-link>
+        <router-link v-if="!$store.state.isLogin" to="/users/signup">
+          <a class="button is-info">
+            <strong>Sign up</strong>
+          </a>
+        </router-link>
+        <router-link to="/users">
+        <button v-if="$store.state.isLogin" class="button is-dark">{{ $store.state.loggedUser.username.charAt(0).toUpperCase() }}</button>
+        </router-link>
+        <router-link v-if="$store.state.isLogin" to="/users/login">
+          <a @click="logout" class="button has-text-dark is-light login-button">
+            Log out
+          </a>
+        </router-link>
+      </div>
+      </div>
+    </div>
+  </div>
+</nav>
+  <!-- <b-navbar class="navbar has-background-light">
+    <template slot="brand">
+      <div class="brand">
+          <div>
+            <img
+              src="../assets/logo.png"
+              alt="Fake Overflow Logo"
+              style="height: 20px;"
+            >
+          </div>
+          <div>
+            fake<strong>overflow</strong>
+          </div>
+      </div>
+    </template>
+
+  <template slot="end">
+    <b-navbar-item tag="div" class="end-item">
+      <div class="buttons">
+        <router-link style="margin-right: 5px;" v-if="!$store.state.isLogin" to="/users/login">
+          <a class="button is-light has-text-info login-button">
+            Log in
+          </a>
+        </router-link>
+        <router-link v-if="!$store.state.isLogin" to="/users/signup">
+          <a class="button is-info">
+            <strong>Sign up</strong>
+          </a>
+        </router-link>
+        <router-link to="/users">
+        <button v-if="$store.state.isLogin" class="button is-dark">{{ $store.state.loggedUser.username.charAt(0).toUpperCase() }}</button>
+        </router-link>
+        <router-link v-if="$store.state.isLogin" to="/users/login">
+          <a @click="logout" class="button has-text-dark is-light login-button">
+            Log out
+          </a>
+        </router-link>
+      </div>
+    </b-navbar-item>
+    </template>
+  </b-navbar> -->
 </template>
 
 <script>
@@ -56,14 +117,20 @@ export default {
   box-shadow: 0px 1px 10px 1px #e4e4e4;
 }
 .brand {
-  margin-left: 10%;
+  margin-left: 5%;
+  padding-top: 10px;
   font-family: 'Ubuntu', sans-serif;
   font-size: 20px;
 }
 .end-item {
-  margin-right: 10%;
+  margin-right: 5%;
 }
 .login-button {
   border: none;
+}
+@media screen and (max-width: 960px) {
+  .brand {
+    margin-left: 10%;
+  }
 }
 </style>

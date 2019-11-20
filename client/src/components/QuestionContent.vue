@@ -37,12 +37,13 @@
         </div>
         <div class="question-poster-item">
           <button class="button is-dark">{{ userInitial }}</button>
+          <div>
           {{ question.user.username }}
+          </div>
         </div>
       </div>
     </div>
     <div class="answer-count">{{ question.answers.length }} Answers</div>
-    <hr>
     <div>
       <Answers></Answers>
     </div>

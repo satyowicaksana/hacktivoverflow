@@ -1,5 +1,5 @@
 import Axios from 'axios'
 
 export default Axios.create({
-  baseURL: 'http://fakeoverflowserver.satyowicaksana.online/'
+  baseURL: 'http://localhost:3000'
 })

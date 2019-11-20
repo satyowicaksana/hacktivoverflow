@@ -49,7 +49,12 @@ export default {
   color: #42b983;
 }
 
-.notifications {
-  margin-top: 50px;
+.has-margin {
+  margin: 20px;
 }
+
+.clickable {
+  cursor: pointer;
+}
+
 </style>
