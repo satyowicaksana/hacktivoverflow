@@ -45,7 +45,8 @@ export default {
     addQuestion () {
       this.$store.dispatch('addQuestion', {
         title: this.title,
-        description: this.description
+        description: this.description,
+        tags: this.tags
       })
     },
     getFilteredTags (text) {

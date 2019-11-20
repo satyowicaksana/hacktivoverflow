@@ -33,13 +33,14 @@ export default {
     WatchedTagCard
   },
   computed: {
-    ...mapState(['questions'])
+    ...mapState(['questions', 'watchedTags'])
   },
   created () {
     if (this.questions.length === 0) {
       console.log('masuk fetch created')
       this.$store.dispatch('fetchQuestions')
     }
+    this.$store.dispatch('getWatchedTags')
   }
 }
 </script>

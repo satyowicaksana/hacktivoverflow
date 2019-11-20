@@ -1,9 +1,9 @@
 <template>
   <section>
-    <form @submit.prevent="addTag">
+    <form @submit.prevent="addWatchedTag">
       <b-field>
         <b-autocomplete
-          v-model="name"
+          v-model="tag"
           :data="filteredDataArray"
           @select="option => selected = option">
           <template slot="empty">No results found</template>
@@ -20,21 +20,8 @@
 export default {
   data () {
     return {
-      data: [
-        'Angular',
-        'Angular 2',
-        'Aurelia',
-        'Backbone',
-        'Ember',
-        'jQuery',
-        'Meteor',
-        'Node.js',
-        'Polymer',
-        'React',
-        'RxJS',
-        'Vue.js'
-      ],
-      name: '',
+      data: ['javascript', 'java', 'c#', 'php', 'pyhton', 'android', 'jquery', 'html', 'c++', 'ios', 'css', 'mysql', 'sql'],
+      tag: '',
       selected: null
     }
   },
@@ -44,13 +31,17 @@ export default {
         return option
           .toString()
           .toLowerCase()
-          .indexOf(this.name.toLowerCase()) >= 0
+          .indexOf(this.tag.toLowerCase()) >= 0
       })
     }
   },
   methods: {
-    addTag () {
+    addWatchedTag () {
       console.log('add tag')
+      let payload = {
+        tag: this.tag
+      }
+      this.$store.dispatch('addWatchedTag', payload)
     }
   }
 }

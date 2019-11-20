@@ -12,7 +12,7 @@
   </header>
   <div class="card-content text-center">
     <div class="content">
-      <div v-if="!showForm">
+      <div v-if="!showForm && watchedTags.length === 0">
         <img src="https://cdn.sstatic.net/Img/ico-binoculars.svg?v=d4dbaac4eec9">
         <p style="font-size: 12px; margin-top: 5px;" class="has-text-grey-light">Watch tags to curate your list of questions.</p>
         <b-button @click="showForm = true" style="background: #E1ECF4; color: #39739D;">
@@ -24,7 +24,16 @@
           Watch a tag
         </b-button>
       </div>
-      <WatchedTagForm v-if="showForm"></WatchedTagForm>
+      <div v-if="showForm || watchedTags.length > 0">
+        <div style="margin-bottom: 10px">
+        <b-tag
+        closable
+        aria-close-label="Close tag"
+         v-for="(tag, i) in watchedTags" :key="'tag' + i" class="tag"
+         @close="deleteTag(tag)">{{ tag }}</b-tag>
+        </div>
+        <WatchedTagForm></WatchedTagForm>
+      </div>
     </div>
   </div>
   </div>
@@ -32,6 +41,7 @@
 
 <script>
 import WatchedTagForm from './WatchedTagForm'
+import { mapState } from 'vuex'
 
 export default {
   name: 'WatchedTagCard',
@@ -42,10 +52,20 @@ export default {
     return {
       showForm: false
     }
+  },
+  computed: mapState(['watchedTags']),
+  methods: {
+    deleteTag (id) {
+      console.log('delete this ', id)
+    }
   }
 }
 </script>
 
 <style>
-
+.tag {
+  margin-left: 5px;
+  background: #E1ECF4 !important;
+  color: #0077CC !important;
+}
 </style>

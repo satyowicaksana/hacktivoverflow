@@ -23,7 +23,8 @@ export default new Vuex.Store({
       answers: []
     },
     profileQuestions: [],
-    profileAnswers: []
+    profileAnswers: [],
+    watchedTags: []
   },
   mutations: {
     SET_LOGGED_USER (state, payload) {
@@ -43,6 +44,9 @@ export default new Vuex.Store({
     },
     SET_PROFILE_ANSWERS (state, payload) {
       state.profileAnswers = payload
+    },
+    SET_WATCHED_TAGS (state, payload) {
+      state.watchedTags = payload
     }
   },
   actions: {
@@ -185,6 +189,29 @@ export default new Vuex.Store({
         .then(({ data }) => {
           console.log(data)
           commit('SET_PROFILE_ANSWERS', data)
+        })
+        .catch(alert)
+    },
+    addWatchedTag ({ dispatch }, payload) {
+      axios.patch('/users/tag', payload, {
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+        .then(({ data }) => {
+          console.log(data)
+          dispatch('getWatchedTags')
+        })
+        .catch(alert)
+    },
+    getWatchedTags ({ commit }, payload) {
+      axios.get('/users/tag', {
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+        .then(({ data }) => {
+          commit('SET_WATCHED_TAGS', data)
         })
         .catch(alert)
     }
