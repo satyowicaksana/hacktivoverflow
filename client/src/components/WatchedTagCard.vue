@@ -55,8 +55,9 @@ export default {
   },
   computed: mapState(['watchedTags']),
   methods: {
-    deleteTag (id) {
-      console.log('delete this ', id)
+    deleteTag (tag) {
+      let payload = { tag }
+      this.$store.dispatch('deleteWatchedTag', payload)
     }
   }
 }

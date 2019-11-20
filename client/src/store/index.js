@@ -214,6 +214,18 @@ export default new Vuex.Store({
           commit('SET_WATCHED_TAGS', data)
         })
         .catch(alert)
+    },
+    deleteWatchedTag ({ dispatch }, payload) {
+      axios.patch('/users/tag/remove', payload, {
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+        .then(({ data }) => {
+          console.log(data)
+          dispatch('getWatchedTags')
+        })
+        .catch(alert)
     }
   },
   modules: {
