@@ -1,4 +1,5 @@
 const Question = require('../models/Question')
+const Answer = require('../models/Answer')
 
 module.exports = {
   add: (req, res, next) => {
@@ -20,9 +21,18 @@ module.exports = {
   },
   delete: (req, res, next) => {
     const { id } = req.params
+    let removed = null
     Question.findByIdAndDelete(id)
     .then(question => {
-      res.status(200).json(question)
+      let promises = []
+      question.answers.forEach(answer => {
+        promises.push(Answer.findByIdAndDelete(answer))
+      })
+      removed = question
+      return Promise.all(promises)
+    })
+    .then(answers => {
+      res.status(200).json(removed)
     })
     .catch(next)
   },

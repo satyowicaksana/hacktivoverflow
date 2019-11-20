@@ -31,7 +31,11 @@ const questionSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Answer',
     }
-  ]
+  ],
+  tags: {
+    type: Array,
+    default: []
+  }
 }, {
   versionKey: false
 })
