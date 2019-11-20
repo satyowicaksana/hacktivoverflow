@@ -9,19 +9,28 @@
       </div>
     </div>
     <hr>
-    <Question v-for="question in questions" :key="question._id" :question="question">
-    </Question>
+    <div class="columns">
+      <div class="column">
+        <Question v-for="question in questions" :key="question._id" :question="question">
+        </Question>
+      </div>
+      <div class="column is-narrow">
+        <WatchedTagCard></WatchedTagCard>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import Question from '../components/Question'
+import WatchedTagCard from '../components/WatchedTagCard'
 
 export default {
   name: 'Questions',
   components: {
-    Question
+    Question,
+    WatchedTagCard
   },
   computed: {
     ...mapState(['questions'])

@@ -24,7 +24,7 @@ const routes = [
       if (localStorage.getItem('access_token')) {
         next()
       } else {
-        next('/register')
+        next('/users/signup')
       }
     }
   },
@@ -48,7 +48,7 @@ const routes = [
       if (localStorage.getItem('access_token')) {
         next()
       } else {
-        next('/register')
+        next('/users/signup')
       }
     }
   },

@@ -57,4 +57,8 @@ export default {
   cursor: pointer;
 }
 
+.text-center {
+  text-align: center;
+}
+
 </style>
