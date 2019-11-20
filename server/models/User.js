@@ -30,7 +30,10 @@ const userSchema = new Schema({
       },
       message: props => `Password must include at least 1 letter and 1 number.`
     }
-  }
+  },
+  watchedTags: [{
+    type: String
+  }]
 }, {
   versionKey: false
 })

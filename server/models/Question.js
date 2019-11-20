@@ -33,8 +33,7 @@ const questionSchema = new Schema({
     }
   ],
   tags: {
-    type: Array,
-    default: []
+    type: Array
   }
 }, {
   versionKey: false

@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cors())
 
 mongoose.connect(process.env.MONGOOSE_URI,
-  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false },
   err => {
   if(err) {
     console.log('connection failed')

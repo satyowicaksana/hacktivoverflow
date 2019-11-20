@@ -32,5 +32,32 @@ module.exports = {
       }
     })
     .catch(next)
-  }
+  },
+  addWatchedTag: (req, res, next) => {
+    const { tag } = req.body
+    User.findByIdAndUpdate(req.loggedUser._id, { $addToSet: { watchedTags: tag } }, {
+      omitUndefined: true, new: true
+    })
+      .then(user => {
+        res.status(200).json(user)
+      })
+      .catch(next)
+  },
+  getWatchedTags: (req, res, next) => {
+    User.findById(req.loggedUser._id)
+      .then(user => {
+        res.status(200).json(user.watchedTags)
+      })
+      .catch(next)
+  },
+  deleteWatchedTag: (req, res, next) => {
+    const { tag } = req.body
+    User.findByIdAndUpdate(req.loggedUser._id, { $pull: { watchedTags: tag } }, {
+      omitUndefined: true, new: true
+    })
+      .then(user => {
+        res.status(200).json(user)
+      })
+      .catch(next)
+  },
 }

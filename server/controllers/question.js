@@ -3,8 +3,8 @@ const Answer = require('../models/Answer')
 
 module.exports = {
   add: (req, res, next) => {
-    const { title, description } = req.body
-    Question.create({ title, description, user: req.loggedUser._id })
+    const { title, description, tags } = req.body
+    Question.create({ title, description, tags, user: req.loggedUser._id })
     .then(question => {
       res.status(201).json(question)
     })
