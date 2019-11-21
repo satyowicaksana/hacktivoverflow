@@ -240,7 +240,6 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          console.log(data)
           dispatch('getWatchedTags')
         })
         .catch(alert)
@@ -263,7 +262,6 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          console.log(data)
           dispatch('getWatchedTags')
         })
         .catch(alert)
@@ -272,7 +270,6 @@ export default new Vuex.Store({
       cron.schedule('* * * * *', function () {
         let result = []
         if (state.questions.length > 0) {
-          console.log('masuk')
           let rand = Math.floor(Math.random() * Math.floor(state.questions.length))
           result = state.questions[rand]
         }
@@ -283,7 +280,6 @@ export default new Vuex.Store({
       if (!state.randomQuestion.title) {
         let result = []
         if (state.questions.length > 0) {
-          console.log('masuk')
           let rand = Math.floor(Math.random() * Math.floor(state.questions.length))
           result = state.questions[rand]
         }
