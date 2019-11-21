@@ -39,9 +39,10 @@ module.exports = {
   findAll: (req, res, next) => {
     let objFind = {}
     if(req.query.userId) {
-      objFind = {
-        user: req.query.userId
-      }
+      objFind.user = req.query.userId
+    }
+    if(req.query.tag) {
+      objFind.tags = req.query.tag
     }
     Question.find(objFind).populate('user').populate('answers').sort([['created_at', -1]])
     .then(questions => {

@@ -66,6 +66,11 @@ const routes = [
         path: '/questions/:id',
         name: 'questionDetail',
         component: () => import('../views/QuestionDetail.vue')
+      },
+      {
+        path: '/questions/tagged/:tag',
+        name: 'questions-tagged',
+        component: () => import('../views/Questions.vue')
       }
     ]
   },

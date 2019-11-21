@@ -84,8 +84,12 @@ export default new Vuex.Store({
       localStorage.clear()
       router.push('/')
     },
-    fetchQuestions ({ commit }) {
-      axios.get('/questions', {
+    fetchQuestions ({ commit }, payload) {
+      let query = ''
+      if (payload) {
+        query = `?tag=${payload}`
+      }
+      axios.get(`/questions${query}`, {
         headers: {
           access_token: localStorage.getItem('access_token')
         }
@@ -117,6 +121,7 @@ export default new Vuex.Store({
         .then(({ data }) => {
           dispatch('fetchQuestions')
           dispatch('fetchProfileQuestions')
+          router.push(`/questions/${payload.id}`)
         })
         .catch(alert)
     },
@@ -142,6 +147,7 @@ export default new Vuex.Store({
         .then(({ data }) => {
           dispatch('fetchQuestions')
           dispatch('fetchProfileAnswers')
+          router.push(`/questions/${data.question}`)
         })
         .catch(alert)
     },

@@ -2,7 +2,8 @@
   <div class="questions">
     <div class="header">
       <div>
-        <h1>All Questions</h1>
+        <h1 v-if="!tag">All Questions</h1>
+        <h1 v-if="tag">Questions tagged [{{ tag }}]</h1>
       </div>
       <div>
         <router-link to="/questions/ask"><button class="button is-info">Ask Question</button></router-link>
@@ -33,14 +34,21 @@ export default {
     WatchedTagCard
   },
   computed: {
+    tag () {
+      return this.$route.params.tag
+    },
     ...mapState(['questions', 'watchedTags'])
   },
   created () {
     if (this.questions.length === 0) {
-      console.log('masuk fetch created')
-      this.$store.dispatch('fetchQuestions')
+      this.$store.dispatch('fetchQuestions', this.tag)
     }
     this.$store.dispatch('getWatchedTags')
+  },
+  watch: {
+    tag () {
+      this.$store.dispatch('fetchQuestions', this.tag)
+    }
   }
 }
 </script>

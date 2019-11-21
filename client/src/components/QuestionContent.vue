@@ -30,6 +30,10 @@
       <div class="column question-details is-two-thirds">
         <div class="question-details-item" v-html="question.description">
         </div>
+        <b-tag
+        v-for="(tag, i) in question.tags" :key="'tag' + i"
+        class="tag-question clickable"
+        ><span @click="$router.push(`/questions/tagged/${tag}`)">{{ tag }}</span></b-tag>
       </div>
       <div class="column question-poster has-text-grey">
         <div class="question-poster-item">

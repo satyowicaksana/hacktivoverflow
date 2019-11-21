@@ -21,6 +21,12 @@
       <div class="question-details-item">
         {{ normalizedDescription }}
       </div>
+      <div>
+        <b-tag
+        v-for="(tag, i) in question.tags" :key="'tag' + i"
+        class="tag-question clickable"
+        ><span @click="$router.push(`/questions/tagged/${tag}`)">{{ tag }}</span></b-tag>
+       </div>
     </div>
     <div class="column question-poster has-text-grey">
       <div class="question-poster-item">
@@ -96,5 +102,14 @@ export default {
     justify-content: space-evenly;
     align-items: center;
   }
+}
+.tag-question {
+  margin-top: 10px;
+  margin-right: 5px;
+  background: #E1ECF4 !important;
+  color: #0077CC !important;
+}
+.tag-question:hover {
+  background: rgb(192, 222, 243) !important;
 }
 </style>

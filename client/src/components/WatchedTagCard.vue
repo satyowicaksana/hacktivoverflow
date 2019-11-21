@@ -29,8 +29,8 @@
         <b-tag
         closable
         aria-close-label="Close tag"
-         v-for="(tag, i) in watchedTags" :key="'tag' + i" class="tag"
-         @close="deleteTag(tag)">{{ tag }}</b-tag>
+         v-for="(tag, i) in watchedTags" :key="'tag' + i" class="tag clickable"
+         @close="deleteTag(tag)"><span @click="$router.push(`/questions/tagged/${tag}`)">{{ tag }}</span></b-tag>
         </div>
         <WatchedTagForm></WatchedTagForm>
       </div>
@@ -63,10 +63,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .tag {
   margin-left: 5px;
   background: #E1ECF4 !important;
   color: #0077CC !important;
+}
+.tag:hover {
+  background: rgb(192, 222, 243) !important;
 }
 </style>
