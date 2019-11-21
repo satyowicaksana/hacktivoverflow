@@ -63,6 +63,11 @@ const routes = [
         component: () => import('../views/Questions.vue')
       },
       {
+        path: '/questions/random',
+        name: 'questions-random',
+        component: () => import('../views/RandomQuestions.vue')
+      },
+      {
         path: '/questions/:id',
         name: 'questionDetail',
         component: () => import('../views/QuestionDetail.vue')

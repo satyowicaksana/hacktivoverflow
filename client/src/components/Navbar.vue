@@ -6,7 +6,7 @@
            <i style="color: grey;" class="fas fa-bars"></i>
         </button>
 
-        <b-dropdown-item @click="$router.push('/')" aria-role="listitem">Home</b-dropdown-item>
+        <b-dropdown-item @click="$router.push('/questions/random')" aria-role="listitem">Home</b-dropdown-item>
         <p class="has-text-grey-light" style="margin-top: 5px; margin-left: 15px; text-align: left; font-size: 12px;">PUBLIC</p>
         <b-dropdown-item @click="$router.push('/questions')" aria-role="listitem">
           <b-icon
@@ -14,10 +14,11 @@
               icon="earth"
               size="is-small">
           </b-icon>
-          Stack Overflow
+          Fake Overflow
         </b-dropdown-item>
-        <!-- <b-dropdown-item class="mobile-list" style="color: #147DEF;" @click="$router.push('/users/login')" aria-role="listitem">Login</b-dropdown-item> -->
-        <!-- <b-dropdown-item class="mobile-list"  style="background: #147DEF; color: white;" @click="$router.push('/users/signup')" aria-role="listitem">Sign Up</b-dropdown-item> -->
+        <b-dropdown-item v-if="!$store.state.isLogin" class="mobile-list" style="color: #147DEF;" @click="$router.push('/users/login')" aria-role="listitem">Log in</b-dropdown-item>
+        <b-dropdown-item v-if="!$store.state.isLogin" class="mobile-list"  style="background: #147DEF; color: white;" @click="$router.push('/users/signup')" aria-role="listitem">Sign Up</b-dropdown-item>
+        <b-dropdown-item v-if="$store.state.isLogin" class="mobile-list" @click="logout" aria-role="listitem">Log out</b-dropdown-item>
     </b-dropdown>
     <div>
       <img class="clickable" @click="$router.push('/')"
@@ -128,9 +129,15 @@ export default {
 .login-button {
   border: none;
 }
-@media screen and (max-width: 960px) {
+.mobile-list {
+  display: none;
+}
+@media screen and (max-width: 1023px) {
   .brand {
     margin-left: 10%;
+  }
+  .mobile-list {
+    display:list-item;
   }
 }
 </style>

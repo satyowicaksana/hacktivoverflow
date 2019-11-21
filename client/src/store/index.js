@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import axios from '../helpers/axios'
 import router from '../router'
 import alert from '../helpers/alert'
+import cron from 'node-cron'
 
 Vue.use(Vuex)
 
@@ -24,7 +25,18 @@ export default new Vuex.Store({
     },
     profileQuestions: [],
     profileAnswers: [],
-    watchedTags: []
+    watchedTags: [],
+    randomQuestion: {
+      title: '',
+      description: '',
+      upvotes: [],
+      downvotes: [],
+      user: {
+        username: ''
+      },
+      answers: []
+    },
+    isLoading: false
   },
   mutations: {
     SET_LOGGED_USER (state, payload) {
@@ -47,12 +59,20 @@ export default new Vuex.Store({
     },
     SET_WATCHED_TAGS (state, payload) {
       state.watchedTags = payload
+    },
+    SET_RANDOM_QUESTION (state, payload) {
+      state.randomQuestion = payload
+    },
+    SET_IS_LOADING (state, payload) {
+      state.isLoading = payload
     }
   },
   actions: {
     register ({ commit }, payload) {
+      commit('SET_IS_LOADING', true)
       axios.post('users/register', payload)
         .then(({ data }) => {
+          commit('SET_IS_LOADING', false)
           const { username, email } = data
           commit('SET_LOGGED_USER', { id: data.id, username, email })
           localStorage.setItem('id', data.id)
@@ -65,8 +85,10 @@ export default new Vuex.Store({
         .catch(alert)
     },
     login ({ commit }, payload) {
+      commit('SET_IS_LOADING', true)
       axios.post('users/login', payload)
         .then(({ data }) => {
+          commit('SET_IS_LOADING', false)
           const { username, email } = data
           commit('SET_LOGGED_USER', { id: data.id, username, email })
           localStorage.setItem('id', data.id)
@@ -84,11 +106,12 @@ export default new Vuex.Store({
       localStorage.clear()
       router.push('/')
     },
-    fetchQuestions ({ commit }, payload) {
+    fetchQuestions ({ commit, dispatch }, payload) {
       let query = ''
       if (payload) {
         query = `?tag=${payload}`
       }
+      commit('SET_IS_LOADING', true)
       axios.get(`/questions${query}`, {
         headers: {
           access_token: localStorage.getItem('access_token')
@@ -96,104 +119,116 @@ export default new Vuex.Store({
       })
         .then(({ data }) => {
           commit('SET_QUESTIONS', data)
+          commit('SET_IS_LOADING', false)
+          dispatch('initiateRandomQuestion')
         })
-        .catch(alert)
+        .catch(err => {
+          alert(err)
+        })
     },
-    addQuestion ({ dispatch }, payload) {
+    addQuestion ({ dispatch, commit }, payload) {
+      commit('SET_IS_LOADING', true)
       axios.post('/questions', payload, {
         headers: {
           access_token: localStorage.getItem('access_token')
         }
       })
         .then(({ data }) => {
+          commit('SET_IS_LOADING', false)
           dispatch('fetchQuestions')
           router.push('/questions')
         })
         .catch(alert)
     },
-    updateQuestion ({ dispatch }, payload) {
-      console.log('masuk update')
+    updateQuestion ({ dispatch, commit }, payload) {
+      commit('SET_IS_LOADING', true)
       axios.patch(`/questions/${payload.id}`, payload, {
         headers: {
           access_token: localStorage.getItem('access_token')
         }
       })
         .then(({ data }) => {
+          commit('SET_IS_LOADING', false)
           dispatch('fetchQuestions')
           dispatch('fetchProfileQuestions')
           router.push(`/questions/${payload.id}`)
         })
         .catch(alert)
     },
-    addAnswer ({ dispatch }, payload) {
+    addAnswer ({ dispatch, commit }, payload) {
+      commit('SET_IS_LOADING', true)
       axios.post('/answers', payload, {
         headers: {
           access_token: localStorage.getItem('access_token')
         }
       })
         .then(({ data }) => {
+          commit('SET_IS_LOADING', false)
           dispatch('fetchQuestions')
           dispatch('fetchQuestion', payload.questionId)
         })
         .catch(alert)
     },
-    updateAnswer ({ dispatch }, payload) {
-      console.log('masuk update')
+    updateAnswer ({ dispatch, commit }, payload) {
+      commit('SET_IS_LOADING', true)
       axios.patch(`/answers/${payload.id}`, payload, {
         headers: {
           access_token: localStorage.getItem('access_token')
         }
       })
         .then(({ data }) => {
+          commit('SET_IS_LOADING', false)
           dispatch('fetchQuestions')
           dispatch('fetchProfileAnswers')
           router.push(`/questions/${data.question}`)
         })
         .catch(alert)
     },
-    fetchQuestion ({ commit }, payload) {
-      console.log('fetch lagi')
+    fetchQuestion ({ commit, dispatch }, payload) {
+      commit('SET_IS_LOADING', true)
       axios.get(`questions/${payload}`)
         .then(({ data }) => {
-          console.log(data.answers)
+          commit('SET_IS_LOADING', false)
           commit('SET_QUESTION', data)
         })
         .catch(alert)
     },
-    vote ({ dispatch }, payload) {
+    vote ({ dispatch, commit }, payload) {
+      commit('SET_IS_LOADING', true)
       axios.patch(`${payload.collection}/${payload.type}/${payload.id}`, null, {
         headers: {
           access_token: localStorage.getItem('access_token')
         }
       })
         .then(({ data }) => {
+          commit('SET_IS_LOADING', false)
           dispatch('fetchQuestions')
           dispatch('fetchQuestion', payload.questionId)
         })
         .catch(alert)
     },
     fetchProfileQuestions ({ commit }) {
-      console.log(`/questions?userId=${localStorage.getItem('id')}`)
+      commit('SET_IS_LOADING', true)
       axios.get(`/questions?userId=${localStorage.getItem('id')}`, {
         headers: {
           access_token: localStorage.getItem('access_token')
         }
       })
         .then(({ data }) => {
-          console.log(data)
+          commit('SET_IS_LOADING', false)
           commit('SET_PROFILE_QUESTIONS', data)
         })
         .catch(alert)
     },
     fetchProfileAnswers ({ commit }) {
-      console.log(`/answers?userId=${localStorage.getItem('id')}`)
+      commit('SET_IS_LOADING', true)
       axios.get(`/answers?userId=${localStorage.getItem('id')}`, {
         headers: {
           access_token: localStorage.getItem('access_token')
         }
       })
         .then(({ data }) => {
-          console.log(data)
+          commit('SET_IS_LOADING', false)
           commit('SET_PROFILE_ANSWERS', data)
         })
         .catch(alert)
@@ -232,6 +267,29 @@ export default new Vuex.Store({
           dispatch('getWatchedTags')
         })
         .catch(alert)
+    },
+    fetchRandomQuestion ({ commit, state }, payload) {
+      cron.schedule('* * * * *', function () {
+        let result = []
+        if (state.questions.length > 0) {
+          console.log('masuk')
+          let rand = Math.floor(Math.random() * Math.floor(state.questions.length))
+          result = state.questions[rand]
+        }
+        commit('SET_RANDOM_QUESTION', result)
+      })
+    },
+    initiateRandomQuestion ({ commit, state, dispatch }, payload) {
+      if (!state.randomQuestion.title) {
+        let result = []
+        if (state.questions.length > 0) {
+          console.log('masuk')
+          let rand = Math.floor(Math.random() * Math.floor(state.questions.length))
+          result = state.questions[rand]
+        }
+        commit('SET_RANDOM_QUESTION', result)
+        dispatch('fetchRandomQuestion')
+      }
     }
   },
   modules: {

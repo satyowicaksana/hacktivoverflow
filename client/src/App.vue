@@ -2,6 +2,7 @@
   <div id="app">
     <Navbar></Navbar>
     <notifications group="alert" position="top center"/>
+    <vue-element-loading :active="$store.state.isLoading" :is-full-screen="true"/>
     <router-view/>
   </div>
 </template>

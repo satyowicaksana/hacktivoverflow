@@ -7,10 +7,12 @@ import 'buefy/dist/buefy.css'
 import Notifications from 'vue-notification'
 import wysiwyg from 'vue-wysiwyg'
 import '../node_modules/vue-wysiwyg/dist/vueWysiwyg.css'
+import VueElementLoading from 'vue-element-loading'
 
 Vue.use(Buefy)
 Vue.use(Notifications)
 Vue.use(wysiwyg, {})
+Vue.component('VueElementLoading', VueElementLoading)
 
 Vue.config.productionTip = false
 

@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import store from '../store'
 
 export default (err) => {
   if (err.response.data.messages) {
@@ -18,4 +19,5 @@ export default (err) => {
       type: 'error'
     })
   }
+  store.commit('SET_IS_LOADING', false)
 }
